@@ -6,4 +6,6 @@ bin-release/
 .actionScriptProperties
 .flexProperties
 .settings/
-.project
+.projectbin/
+obj/
+bin/
