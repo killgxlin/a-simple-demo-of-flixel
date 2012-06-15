@@ -44,7 +44,7 @@ package killerg.goals.atomic
 			
 			if (FlxMath.chanceRoll(1)) 
 			{
-				GetChar().fire(2);
+				GetChar().fire(0);
 			}
 
 			return _status;

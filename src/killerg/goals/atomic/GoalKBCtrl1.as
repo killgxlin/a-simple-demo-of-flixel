@@ -26,18 +26,18 @@ package killerg.goals.atomic
 			activateIfInactive();
 			if (_status != ACTIVE) return _status;
 					
-			if (FlxG.keys.F && !FlxG.keys.G) 
+			if (FlxG.keys.LEFT && !FlxG.keys.RIGHT) 
 			{
 				GetChar().run(FlxObject.LEFT);
 			}
-			if (FlxG.keys.G && !FlxG.keys.F) 
+			if (FlxG.keys.RIGHT && !FlxG.keys.LEFT) 
 			{
 				GetChar().run(FlxObject.RIGHT);
 			}
 			
-			if ( FlxG.keys.justPressed("T") )
+			if ( FlxG.keys.justPressed("V") )
 			{
-				GetChar().jump(FlxG.keys.R);
+				GetChar().jump();
 			}
 			
 			if (FlxG.keys.justPressed("Z")) 

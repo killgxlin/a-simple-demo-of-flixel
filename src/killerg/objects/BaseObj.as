@@ -13,20 +13,20 @@ package killerg.objects
 		static public const ZEROVECTOR:FlxPoint = new FlxPoint(0, 0);
 		static public const INVALID:int = -1;
 		
-		private var action:Goal = null;
-		private var effects:Vector.<Goal> = null;
+		private var _action:Goal = null;
+		private var _effects:Vector.<Goal> = null;
 		
-		final public function setAction(ctrllor:Goal):void 
+		final public function setAction(Ctrllor:Goal):void 
 		{
-			this.action = ctrllor;
+			this._action = Ctrllor;
 		}
 			
-		final private function FindEffect(effect:Goal):int 
+		final private function FindEffect(Effect:Goal):int 
 		{
-			var len:int = effects.length;
+			var len:int = _effects.length;
 			for (var i:int = 0; i < len; i++) 
 			{
-				if (effects[i] == effect) 
+				if (_effects[i] == Effect) 
 				{
 					return i;
 				}
@@ -37,17 +37,17 @@ package killerg.objects
 		
 		final private function updateEffects():void 
 		{
-			var len:int = effects.length;
+			var len:int = _effects.length;
 			
 			for (var i:int = 0; i < len; i++) 
 			{
-				if (effects[i] != null) 
+				if (_effects[i] != null) 
 				{
-					effects[i].process();
-					if (effects[i].hasFailed() || effects[i].isCompleted()) 
+					_effects[i].process();
+					if (_effects[i].hasFailed() || _effects[i].isCompleted()) 
 					{
-						effects[i].terminate();
-						effects[i] = null;
+						_effects[i].terminate();
+						_effects[i] = null;
 					}
 				}
 			}
@@ -55,13 +55,13 @@ package killerg.objects
 		
 		final private function endAllEffect():void 
 		{
-			var len:int = effects.length;
+			var len:int = _effects.length;
 			for (var i:int = 0; i < len; i++) 
 			{
-				if (effects[i] != null) 
+				if (_effects[i] != null) 
 				{
-					effects[i].terminate();
-					effects[i] = null;					
+					_effects[i].terminate();
+					_effects[i] = null;					
 				}
 			}
 		}
@@ -69,14 +69,14 @@ package killerg.objects
 		public function BaseObj(X:Number=0, Y:Number=0, SimpleGraphic:Class=null) 
 		{
 			super(X, Y, SimpleGraphic);
-			effects = new Vector.<Goal>(10);
+			_effects = new Vector.<Goal>(10);
 		}
 		
 		override public function destroy():void 
 		{
 			super.destroy();
-			action = null;
-			effects = null;
+			_action = null;
+			_effects = null;
 		}
 		
 		override public function kill():void 
@@ -84,22 +84,22 @@ package killerg.objects
 			super.kill();
 			endAllEffect();
 			
-			if (action != null) 
+			if (_action != null) 
 			{
-				action.terminate();
-				action = null;
+				_action.terminate();
+				_action = null;
 			}
 		}
 		
 		override public function update():void 
 		{
-			if (action != null) 
+			if (_action != null) 
 			{
-				action.process();
-				if (action.hasFailed() || action.isCompleted()) 
+				_action.process();
+				if (_action.hasFailed() || _action.isCompleted()) 
 				{
-					action.terminate();
-					action = null;
+					_action.terminate();
+					_action = null;
 				}
 			}
 			
@@ -107,28 +107,28 @@ package killerg.objects
 			super.update();
 		}
 		
-		final public function addEffect(effect:Goal):void 
+		final public function addEffect(Effect:Goal):void 
 		{
-			if (effect == null) return;
+			if (Effect == null) return;
 			
-			var idx:int = FindEffect(effect);
+			var idx:int = FindEffect(Effect);
 			if (idx != INVALID) return;
 			
 			idx = FindEffect(null);
 			if (idx == INVALID) return;
 			
-			effects[idx] = effect;
+			_effects[idx] = Effect;
 		}
 		
-		final public function removeEffect(effect:Goal):void 
+		final public function removeEffect(Effect:Goal):void 
 		{
-			if (effect == null) return;
+			if (Effect == null) return;
 			
-			var idx:int = FindEffect(effect);
+			var idx:int = FindEffect(Effect);
 			if (idx == INVALID) return;
 			
-			effect.terminate();
-			effects[idx] = null;
+			Effect.terminate();
+			_effects[idx] = null;
 		}
 		
 	}

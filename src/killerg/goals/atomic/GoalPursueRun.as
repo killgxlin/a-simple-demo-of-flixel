@@ -46,7 +46,7 @@ package killerg.goals.atomic
 			
 			if (GetChar().isTouching(FlxObject.WALL) && _jumps < 6)
 			{
-				GetChar().jump(_jumps++>0);
+				GetChar().jump()//_jumps++>0);
 			}
 			else if(_jumps >= 6)
 			{

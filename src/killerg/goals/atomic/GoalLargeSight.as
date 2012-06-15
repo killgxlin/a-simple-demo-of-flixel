@@ -34,7 +34,7 @@ package killerg.goals.atomic
 	
 		override public function terminate():void 
 		{
-			FlxG.camera.follow(GetWeapon().owner);
+			FlxG.camera.follow(GetWeapon().parent);
 			FlxG.camera.setScale(initScale.x, initScale.y);
 			FlxG.camera.zoom = 2;
 		}

@@ -13,7 +13,7 @@ package killerg
 	{
 		
 		public static var chars:CharacterMgr;
-		public static var arrows:ArrowMgr;
+		public static var weapons:WeaponMgr;
 		public static var map:FlxTilemap;
 		public static var player:Character;
 		public static var bloods:BloodMgr;
@@ -22,7 +22,7 @@ package killerg
 		{
 			map = new FlxTilemap;
 			chars = new CharacterMgr;
-			arrows = new ArrowMgr;
+			weapons = new WeaponMgr;
 			bloods = new BloodMgr;
 		}
 		
@@ -30,7 +30,7 @@ package killerg
 		{
 			state.add(map);
 			state.add(chars);
-			state.add(arrows);
+			state.add(weapons);
 			state.add(bloods);
 		}
 		
@@ -39,8 +39,8 @@ package killerg
 			chars.destroy();
 			chars = null;
 			
-			arrows.destroy();
-			arrows = null;
+			weapons.destroy();
+			weapons = null;
 						
 			map = null;
 			player = null;

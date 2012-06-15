@@ -12,72 +12,73 @@ package killerg.objects
 	 * ...
 	 * @author killerg
 	 */
-	public class Arrow extends BaseObj 
+	public class Arrow extends BaseObj implements Weapon
 	{
 
-		private var liveTimer:FlxDelay;
-		public var owner:Character = null;
+		public var parent:Character = null;
+
+		private var _liveTimer:FlxDelay = new FlxDelay(Resource.ARROW_LIVE);
+		
+		private var _hit:Boolean = false;
+		
+		private var _damage:int = 0;
+		
 		
 		public function Arrow() 
 		{
 			super(0, 0, Resource.ImgArrow);
-			maxVelocity.make(300, 100);
-			acceleration.make(0, 200);
-			exists = false;
-			this.liveTimer = new FlxDelay(0);
+			
+			this.exists = false;
 		}
 		
 		override public function destroy():void 
 		{
 			super.destroy();
-			this.liveTimer = null;
-			this.owner = null;
+
+			this.parent = null;
 		}
 		
-		public function fire(char:Character, idx:int):void 
+		//{Angle:Number, Vel:Number = 150, Gravity:Number = 150}
+		public function launch(Parent:Character, Args:Object = null):Boolean
 		{
+			if (Args == null)  return false;
+			
+			this.parent = Parent;
+			
 			this.reset(0, 0);
-			
-			switch(idx)
-			{
-				case 0:
-					this.velocity.make(300, -50);
-					break;
-				case 1:
-					this.velocity.make(200, -200);
-					addEffect(new GoalLargeSight(this));
-					break;
-				case 2:
-					this.velocity.make(100, -300);
-					
-					if (FlxMath.vectorLength(char.x - Registry.player.x, char.y-Registry.player.y) > 40) 
-					{
-						addEffect(new GoalPursueFly(this));
-					}
-					
-					break;
-				default:
-					this.velocity.make(0, 0);
-					break;
-			}
-			
-			if (char.facing == LEFT) 
-			{
-				this.velocity.x *= -1;
-			}
-			else if (char.facing == RIGHT) 
-			{
 
-			}
-			
-			this.x = char.x
-			this.y = char.y + 3;			
-			this.owner = char;
-			
 			this.moves = true;
 			this.immovable = false;
 			
-			this.liveTimer.reset(Resource.ARROW_LIVE);
+			this._damage = Args.Damage;
+			this._hit = false;
+			this._liveTimer.abort();
+
+			var maxVel:Number = Args.Vel * 2;
+			this.maxVelocity.make(Args.Vel, Args.Vel);
+			this.acceleration.make(0, Args.Gravity);
+
+			var radian:Number = Args.Angle * Math.PI / 180;
+			this.velocity.y = - Math.sin(radian) * Args.Vel;
+			this.velocity.x = Math.cos(radian) * Args.Vel;
+			this.y = Parent.y + 3;			
+			
+			if (Parent.facing == LEFT) 
+			{
+				this.velocity.x *= -1;
+				this.x = Parent.x - 3;
+			}
+			else
+			{
+				this.x = Parent.x + 3;
+			}
+			
+			if (Args.Goal != null) 
+			{
+				this.addEffect(new (Args.Goal)(this));
+			}
+		
+			return true;
 		}
 		
 		override public function update():void 
@@ -89,18 +90,37 @@ package killerg.objects
 				angle = FlxU.getAngle(velocity, ZEROVECTOR ) + 90;
 			}
 			
-			if (liveTimer.hasExpired)
+			if (_hit && _liveTimer.hasExpired)
 			{
 				kill();
 			}
 		}
 		
-		public function stop():void 
+		public function onHit():void 
 		{
+			this._hit = true;
+			this._liveTimer.reset(Resource.ARROW_LIVE);
+			
 			this.immovable = true;
 			this.moves = false;
 		}
 		
+		public function hitMap(Map:FlxTilemap):void 
+		{
+			onHit();
+		}
+		
+		public function hitChar(Char:Character):void 
+		{
+			if (this.parent != Char && this._hit == false)
+			{
+				if (FlxCollision.pixelPerfectCheck(this, Char)) 
+				{
+					Char.hurt(this._damage);
+					this.onHit();				
+				}
+			}
+		}
 	}
 
 }

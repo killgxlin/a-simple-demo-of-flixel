@@ -14,33 +14,32 @@ package killerg.objects
 		public function Character() 
 		{
 			super();
+			loadGraphic(Resource.ImgChar, true, true, 8, 8);
+
 			exists = false;
-			super.loadGraphic(Resource.ImgChar, true, true, 8, 8);
-			
 		}
 		
-		public function init(x:int, y:int, idx:int = 0, ctrl:Class = null):void 
+		public function init(X:int, Y:int, GraphicIdx:int = 0, Ctrl:Class = null):void 
 		{
-			reset(x, y);
+			reset(X, Y);
 			
 			_animations.splice(0, _animations.length);
 			
-			addAnimation("run", [idx]);
-			addAnimation("jump", [idx]);
-			addAnimation("idle", [idx]);
-			addAnimation("fall", [idx]);
-		
+			addAnimation("run", [GraphicIdx]);
+			addAnimation("jump", [GraphicIdx]);
+			addAnimation("idle", [GraphicIdx]);
+			addAnimation("fall", [GraphicIdx]);
 
 			
 			acceleration.make(0, 400);
 			drag.make(800, 800);
 			maxVelocity.make(100, 200);
 			
-			health = 2;
+			health = 20;
 			
-			if (ctrl != null) 
+			if (Ctrl != null) 
 			{
-				setAction(new ctrl(this));
+				setAction(new Ctrl(this));
 			}			
 			
 			super.flicker(1);
@@ -103,30 +102,44 @@ package killerg.objects
 			Registry.bloods.bleed(this);		
 		}
 		
-		public function run(dir:uint):void 
+		public function run(Dir:uint):void 
 		{
-			facing = dir;
-			if (dir == LEFT) 
+			facing = Dir;
+			if (Dir == LEFT) 
 			{
 				acceleration.x += -drag.x;
 			}
-			else if (dir == RIGHT) 
+			else if (Dir == RIGHT) 
 			{
 				acceleration.x += drag.x;
 			}
 		}
 		
-		public function jump(big:Boolean = false):void 
+		public function jump():void 
 		{
 			if (isTouching(FLOOR)) 
 			{
-				velocity.y = -(big?170:120);
+				velocity.y = -((170-120) * (1-( maxVelocity.x - Math.abs(velocity.x) ) / maxVelocity.x) + 120)
 			}
 		}
 		
-		public function fire(idx:uint):void 
+		public function fire(Idx:uint):void 
 		{
-			Registry.arrows.fire(this, idx);
+			switch (Idx) 
+			{
+				case 0:
+					Registry.weapons.launch(this, Registry.weapons.getArrowTemplete());
+					break;
+				case 1:
+					Registry.weapons.launch(this, Registry.weapons.getArrowTemplete());
+					break;
+				case 2:
+					Registry.weapons.launch(this, Registry.weapons.getSlashTemplete());
+					break;
+				default:
+					break;
+			}
+
 		}
 	}
 

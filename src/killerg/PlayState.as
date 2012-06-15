@@ -2,6 +2,7 @@ package killerg
 {
 	import org.flixel.*;
 	import killerg.*;
+	import killerg.objects.*;
 	import killerg.goals.atomic.*;
 	/**
 	 * ...
@@ -9,7 +10,7 @@ package killerg
 	 */
 	public class PlayState extends FlxState 
 	{
-		
+		public var weapon_rm:Vector.<BaseObj> = new Vector.<BaseObj>
 	
 		override public function create():void
 		{
@@ -23,23 +24,30 @@ package killerg
 			FlxG.camera.follow(Registry.player);
 			FlxG.worldBounds = Registry.map.getBounds();
 			FlxG.camera.bounds = FlxG.worldBounds;
-			
-			
 		}
 		
 		override public function update():void 
 		{
+			globalControl();
+			
 			super.update();
 			
 			FlxG.collide(Registry.chars);
 			FlxG.collide(Registry.chars, Registry.map);
 			
-			FlxG.collide(Registry.arrows, Registry.map, Registry.arrows.hitMap);
-			FlxG.overlap(Registry.arrows, Registry.chars, Registry.arrows.hitChar);
-			
+			FlxG.collide(Registry.weapons, Registry.map, Registry.weapons.hitMap);
+			FlxG.overlap(Registry.weapons, Registry.chars, Registry.weapons.hitChar);
+		}
+		
+		private function globalControl():void 
+		{
+			if (FlxG.keys.justPressed("Y")) 
+			{
+				FlxG.visualDebug = !FlxG.visualDebug;
+			}
 			if (FlxG.keys.justPressed("S")) 
 			{
-				Registry.chars.spawn(Registry.player.getMidpoint().x + 20, Registry.player.getMidpoint().y, 16, GoalPursueRun);
+				Registry.chars.spawn(Registry.player.getMidpoint().x + 20, Registry.player.getMidpoint().y, 16, GoalAICtrl);
 			}
 			if (FlxG.keys.justPressed("W")) 
 			{
@@ -49,8 +57,6 @@ package killerg
 			{
 				Registry.player = Registry.chars.spawn(Registry.player.x, Registry.player.y, 0, GoalKBCtrl1);
 			}
-			
-
 		}
 	}
 

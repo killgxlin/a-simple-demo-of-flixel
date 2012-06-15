@@ -1,8 +1,7 @@
 package killerg.goals.composite 
 {
-	import killerg.managers.CharacterMgr;
+	import killerg.goals.composite.GoalComposite;
 	import killerg.objects.BaseObj;
-	import killerg.objects.Character;
 	
 	/**
 	 * ...
@@ -10,27 +9,15 @@ package killerg.goals.composite
 	 */
 	public class GoalAttack extends GoalComposite 
 	{
-		private var _target:Character;
 		
-		public function GoalAttack(theObj:BaseObj, target:Character) 
+		public function GoalAttack(theObj:BaseObj) 
 		{
 			super(theObj);
-			_target = target;			
-		}
-		override public function activate():void 
-		{
 			
 		}
 		
-		override public function process():int 
-		{
-			
-		}
 		
-		override public function terminate():void 
-		{
-			
-		}
+		
 	}
 
 }

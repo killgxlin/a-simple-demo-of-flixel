@@ -31,6 +31,7 @@ package killerg.goals.atomic
 		
 		override public function activate():void 
 		{
+			_lastPos.make(0, 0);
 			_status = ACTIVE;
 		}
 		
@@ -39,7 +40,7 @@ package killerg.goals.atomic
 			activateIfInactive()
 			if (_status != ACTIVE)  return _status;
 			
-			if ((_lastPos.x != Registry.player.getMidpoint().x || _lastPos.y != Registry.player.getMidpoint().y) && _timer.hasExpired) 
+			if (posChg() && _timer.hasExpired) 
 			{
 				_lastPos.copyFrom( Registry.player.getMidpoint());
 				
@@ -47,10 +48,13 @@ package killerg.goals.atomic
 				var dstPos:FlxPoint = Registry.player.getMidpoint();
 				if (Registry.map.ray(srcPos, dstPos) )
 				{
+					GetBaseObj().stopFollowingPath(true);
 					FlxVelocity.moveTowardsPoint(GetBaseObj(), dstPos, _speed);
 				}
 				else
 				{
+					GetBaseObj().stopFollowingPath(true);
+					
 					_path = Registry.map.findPath(srcPos, dstPos, false, false);
 					if (_path != null) 
 					{
@@ -71,6 +75,11 @@ package killerg.goals.atomic
 		override public function terminate():void 
 		{
 			GetBaseObj().stopFollowingPath(true);
+		}
+		
+		private function posChg():Boolean
+		{
+			return _lastPos.x != Registry.player.getMidpoint().x || _lastPos.y != Registry.player.getMidpoint().y
 		}
 		
 	}
