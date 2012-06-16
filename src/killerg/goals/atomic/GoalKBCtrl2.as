@@ -1,5 +1,7 @@
 package killerg.goals.atomic
 {
+	import killerg.objects.Character;
+	import killerg.TouchPad;
 	import org.flixel.*;
 	/**
 	 * ...
@@ -7,9 +9,12 @@ package killerg.goals.atomic
 	 */
 	public class GoalKBCtrl2 extends Goal 
 	{
+		private var pad:TouchPad;
 		public function GoalKBCtrl2(theObj:Character):void 
 		{
 			super(theObj);
+			pad = new TouchPad;
+			FlxG.state.add(pad);
 		}
 		
 		override public function activate():void 
@@ -22,30 +27,30 @@ package killerg.goals.atomic
 			activateIfInactive();
 			if (_status != ACTIVE)  return _status;
 			
-			if (FlxG.keys.LEFT) 
+			if (pad.left) 
 			{
-				_theObj.run(FlxObject.LEFT);
+				GetChar().run(FlxObject.LEFT);
 			}
-			if (FlxG.keys.RIGHT) 
+			if (pad.right) 
 			{
-				_theObj.run(FlxObject.RIGHT);
+				GetChar().run(FlxObject.RIGHT);
 			}
-			if ( FlxG.keys.UP && _theObj.isTouching(FlxObject.FLOOR))
+			if ( pad.jump)
 			{
-				_theObj.jump();
+				GetChar().jump();
 			}
 			
 			if (FlxG.keys.justPressed("COMMA")) 
 			{
-				_theObj.fire(0);
+				GetChar().fire(0);
 			}
 			if (FlxG.keys.justPressed("PERIOD")) 
 			{
-				_theObj.fire(1);
+				GetChar().fire(1);
 			}
 			if (FlxG.keys.justPressed("SLASH")) 
 			{
-				_theObj.fire(2);
+				GetChar().fire(2);
 			}		
 			
 			return _status;

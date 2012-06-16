@@ -53,15 +53,19 @@ package killerg.managers
 			return (array.getFirstAvailable() as Weapon).launch(Char, Args);
 		}
 
-		public function getArrowTemplete():Object 
+		public function getArrowTemplete(Action:Class = null):Object 
 		{
-			return { "Type":"Arrow", "Angle":40 + FlxMath.randFloat( -2, 2), "Vel":150, "Gravity":150, "Damage":10, "Goal":null };
+			return { "Type":"Arrow", "Angle":40 + FlxMath.randFloat( -2, 2), "Vel":150, "Gravity":150, "Damage":10, "Goal":Action };
 		}
 		
 		public function getSlashTemplete():Object 
 		{
-			return { "Type":"Slash", "Angle":10, "Scope":20, "Damage":10 };
+			return { "Type":"Slash", "Angle":180, "Scope":20, "Damage":10, "Scale":new FlxPoint(.5, .5) };
 		}
 
+		public function getSlashTemplete2():Object 
+		{
+			return { "Type":"Slash", "Angle":-45, "Scope":20, "Damage":10, "Scale":new FlxPoint(.5, .5) };
+		}
 	}
 }

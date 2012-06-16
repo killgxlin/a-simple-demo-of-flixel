@@ -11,12 +11,8 @@ package killerg
 	 */
 	public class TestState extends FlxState 
 	{
-		private var _sinTable:Array = null;
-		private var _cosTable:Array = null;
-		
 		public function TestState() 
 		{
-			
 		}
 		override public function create():void 
 		{

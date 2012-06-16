@@ -2,6 +2,7 @@ package killerg.objects
 {
 	import org.flixel.*;
 	import killerg.*;
+	import killerg.goals.atomic.*;
 	
 	/**
 	 * ...
@@ -128,13 +129,14 @@ package killerg.objects
 			switch (Idx) 
 			{
 				case 0:
-					Registry.weapons.launch(this, Registry.weapons.getArrowTemplete());
+					
+					Registry.weapons.launch(this, Registry.weapons.getArrowTemplete(Registry.player == this ? null:GoalPursueFly));
 					break;
 				case 1:
-					Registry.weapons.launch(this, Registry.weapons.getArrowTemplete());
+					Registry.weapons.launch(this, Registry.weapons.getSlashTemplete());
 					break;
 				case 2:
-					Registry.weapons.launch(this, Registry.weapons.getSlashTemplete());
+					Registry.weapons.launch(this, Registry.weapons.getSlashTemplete2());
 					break;
 				default:
 					break;

@@ -35,7 +35,7 @@ package killerg.goals.atomic
 				GetChar().run(FlxObject.RIGHT);
 			}
 			
-			if ( FlxG.keys.justPressed("V") )
+			if ( FlxG.keys.justPressed("UP") )
 			{
 				GetChar().jump();
 			}

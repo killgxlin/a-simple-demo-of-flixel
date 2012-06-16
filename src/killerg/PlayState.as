@@ -11,7 +11,7 @@ package killerg
 	public class PlayState extends FlxState 
 	{
 		public var weapon_rm:Vector.<BaseObj> = new Vector.<BaseObj>
-	
+
 		override public function create():void
 		{
 			Registry.init();
@@ -19,11 +19,12 @@ package killerg
 
 			Registry.map.loadMap(new Resource.CsvTilesData, Resource.ImgTiles, 16);
 			Registry.chars.spawn(Registry.map.getMidpoint().x + 20, Registry.map.getMidpoint().y, 16, GoalAICtrl);
-			Registry.player = Registry.chars.spawn(Registry.map.getMidpoint().x, Registry.map.getMidpoint().y, 0, GoalKBCtrl1);
+			Registry.player = Registry.chars.spawn(Registry.map.getMidpoint().x, Registry.map.getMidpoint().y, 0, GoalKBCtrl2);
 			
 			FlxG.camera.follow(Registry.player);
 			FlxG.worldBounds = Registry.map.getBounds();
 			FlxG.camera.bounds = FlxG.worldBounds;
+
 		}
 		
 		override public function update():void 
@@ -55,7 +56,7 @@ package killerg
 			}
 			if (FlxG.keys.justPressed("D")) 
 			{
-				Registry.player = Registry.chars.spawn(Registry.player.x, Registry.player.y, 0, GoalKBCtrl1);
+				Registry.player = Registry.chars.spawn(Registry.player.x, Registry.player.y, 0, GoalKBCtrl2);
 			}
 		}
 	}

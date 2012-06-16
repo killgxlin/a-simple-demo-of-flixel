@@ -1,6 +1,7 @@
 package killerg.objects 
 {
 	import killerg.*;
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxTilemap;
 	import org.flixel.plugin.photonstorm.*;
 	
@@ -16,6 +17,28 @@ package killerg.objects
 		
 		private var _damage:int = 0;
 		
+		private var _oriOffset:FlxPoint = new FlxPoint;
+		
+		private var _oriWidth:uint = 0;
+		
+		private var _oriHeight:uint = 0;
+		
+		final protected function adaptScale(Scale:FlxPoint):void 
+		{
+			this.offset.copyFrom(_oriOffset);
+			this.width = _oriWidth;
+			this.height = _oriHeight;
+			
+			this.scale.x = Scale.x
+			this.scale.y = Scale.y
+
+			this.offset.x=this.offset.x + Math.floor(this.width  * -(this.scale.x - 1)/2);
+			this.offset.y=this.offset.y + Math.floor(this.height * -(this.scale.y - 1)/2);
+		
+			this.width= this.width  * (this.scale.x);
+			this.height=this.height * (this.scale.y);
+		}
+
 		public function Slash() 
 		{
 			super();
@@ -30,6 +53,10 @@ package killerg.objects
 				}
 			});
 			
+			_oriOffset.copyFrom(this.offset);
+			_oriWidth = this.width;
+			_oriHeight = this.height;
+			
 			this.exists = false;
 		}
 		
@@ -39,14 +66,13 @@ package killerg.objects
 			
 			reset(0, 0);
 			
-			this.height = parent.height;
-			this.width = parent.width;
-			
+			adaptScale(Args.Scale);	
+
 			if (parent.facing == LEFT) 
 			{
 				this.x = parent.x - this.width;
 				this.facing = LEFT;
-				this.angle = 270-Args.Angle;
+				this.angle = 180 - Args.Angle;
 			}
 			
 			if (parent.facing == RIGHT) 
@@ -55,18 +81,15 @@ package killerg.objects
 				this.facing = RIGHT;
 				this.angle =  Args.Angle;
 			}
-			
-			
+
 			this.y = parent.y
+			
 			
 			this.velocity.x = 0;
 			this.velocity.y = 0;
 			
 			this.acceleration.x = 0;
 			this.acceleration.y = 0;
-			
-			this.scale.make(.5, .5);
-			this.offset.make( this.width/2, this.height/2);
 			
 			this.moves = true;
 			this.immovable = false;
@@ -113,6 +136,7 @@ package killerg.objects
 				}
 			}
 		}
+		
 	}
 
 }
